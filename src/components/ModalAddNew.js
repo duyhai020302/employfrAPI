@@ -5,7 +5,7 @@ import { createNewUser } from '../service/UserService';
 import { toast } from 'react-toastify';
 
 const ModalAddNew = (props) => {
-    const {show, handleClose}=props
+    const {show, handleClose, handleUpdate}=props
 
 
     const[name, setName]=useState("");
@@ -15,9 +15,11 @@ const ModalAddNew = (props) => {
         const response=await createNewUser(name, job);
         if(response&&response.id){
             handleClose();
+            handleUpdate({id:response.id,first_name: name})
             setJob("");
             setName("");
             toast.success("Add successfully")
+
         }
         else{
             toast.error("Add unsuccessfully")
@@ -34,7 +36,7 @@ const ModalAddNew = (props) => {
 
             <Modal.Body>
                 <form>
-                    <div class="form-group">
+                    <div className="form-group">
                         <label>Name</label>
                         <input type="text" className="form-control" value={name} onChange={(e)=>{setName(e.target.value)}}/>
         

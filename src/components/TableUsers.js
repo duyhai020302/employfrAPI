@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import Table from 'react-bootstrap/Table';
 import { fetchAllUser } from '../service/UserService';
 import ReactPaginate from 'react-paginate';
-
+import ModalAddNew from './ModalAddNew';
 
 
 const TableUsers = () => {
@@ -11,10 +11,15 @@ const TableUsers = () => {
   const [totalUser, setTotalUser]=useState(0);
   const [totalPage, setTotalPage]=useState(0);
 
+  const [chooseshow, setChooseshow]=useState(false);
+
+
   useEffect(()=>{
     getUsers(1);
   },[]);
-
+  const handleUpdate=(user)=>{
+    setListusers([user,...listusers]);
+  }
 
   const getUsers =async (page)=>{
     let response=await fetchAllUser(page);
@@ -37,6 +42,15 @@ const TableUsers = () => {
 
   return (
     <>
+
+      <div className="my-3 add-new">
+        <span><b>List User</b></span>
+        <button className="btn btn-primary" onClick={()=>{setChooseshow(true)}}>Add new user</button>
+        <ModalAddNew show={chooseshow} handleClose={()=>setChooseshow(false)} handleUpdate={handleUpdate}/>
+      </div>
+
+
+
       <Table striped bordered hover variant="dark">
         <thead>
           <tr>
