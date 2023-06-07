@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import { createNewUser } from '../service/UserService';
+import { toast } from 'react-toastify';
 
 const ModalAddNew = (props) => {
     const {show, handleClose}=props
@@ -10,6 +11,18 @@ const ModalAddNew = (props) => {
     const[name, setName]=useState("");
     const[job, setJob]=useState("");
 
+    const handleSave=async ()=>{
+        const response=await createNewUser(name, job);
+        if(response&&response.id){
+            handleClose();
+            setJob("");
+            setName("");
+            toast.success("Add successfully")
+        }
+        else{
+            toast.error("Add unsuccessfully")
+        }
+    }
     
   return (
     <>
